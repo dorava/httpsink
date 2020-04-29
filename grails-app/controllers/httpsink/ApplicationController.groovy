@@ -4,26 +4,10 @@ import com.google.common.base.Splitter
 import com.google.common.collect.MapDifference
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import com.google.gson.Gson
 import grails.core.GrailsApplication
 import grails.plugins.*
-import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient
-import io.confluent.kafka.serializers.KafkaAvroDeserializer
-import io.confluent.kafka.serializers.KafkaAvroSerializer
-import org.apache.avro.Schema
-import org.apache.avro.file.DataFileStream
-import org.apache.avro.generic.GenericData
-import org.apache.avro.generic.GenericDatumReader
-import org.apache.avro.generic.GenericDatumWriter
-import org.apache.avro.generic.GenericRecord
-import org.apache.avro.io.DatumReader
-import org.apache.avro.io.DatumWriter
-import org.apache.avro.io.Decoder
-import org.apache.avro.io.EncoderFactory
-import org.apache.avro.io.JsonDecoder
-import org.apache.avro.io.JsonEncoder
 import org.apache.commons.lang3.StringUtils
-import org.apache.kafka.clients.consumer.KafkaConsumer
+
 
 class ApplicationController implements PluginManagerAware {
 
