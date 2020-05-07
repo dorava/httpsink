@@ -23,7 +23,7 @@ class ApplicationController implements PluginManagerAware {
         def db = StringUtils.substringBetween(s, "db=", ",")
         def table = StringUtils.substringBetween(s, "table=", ",")
         def op = StringUtils.substringBetween(s, "op=", ",")
-        def ts_ms = StringUtils.substringBetween(s, "ts_ms=", ",")
+        def ts_ms = StringUtils.substringBetween(s, "op=u,ts_ms=", "}")
 
         if (!before && !after) return []
 
