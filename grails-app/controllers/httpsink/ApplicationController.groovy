@@ -17,7 +17,7 @@ class ApplicationController implements PluginManagerAware {
 
     def index() {
         def s = request.reader.text
-        println(s)
+        println(URLDecoder.decode(s, "UTF-8"))
         def before = StringUtils.substringBetween(s, "before=Struct{", "},")
         def after = StringUtils.substringBetween(s, "after=Struct{", "},")
         def db = StringUtils.substringBetween(s, "db=", ",")
@@ -27,22 +27,30 @@ class ApplicationController implements PluginManagerAware {
 
         if (!before && !after) return []
 
-        def be
-        def af
+        Map<String, String> be
+        Map<String, String> af
         def id
         def dif
         switch (op) {
             case "u":
                 be = Splitter.on(",").withKeyValueSeparator("=").split(before)
+                be = Maps.newHashMap(be)
+                be.replaceAll({ k, v -> decode(v) })
                 af = Splitter.on(",").withKeyValueSeparator("=").split(after)
+                af = Maps.newHashMap(af)
+                af.replaceAll({ k, v -> decode(v) })
                 dif = Maps.difference(be, af).entriesDiffering().keySet().join(",")
                 break
             case "c":
                 be = null
                 af = Splitter.on(",").withKeyValueSeparator("=").split(after)
+                af = Maps.newHashMap(af)
+                af.replaceAll({ k, v -> decode(v) })
                 break
             case "d":
                 be = Splitter.on(",").withKeyValueSeparator("=").split(before)
+                be = Maps.newHashMap(be)
+                be.replaceAll({ k, v -> decode(v) })
                 af = null
                 break
             default:
@@ -70,5 +78,12 @@ class ApplicationController implements PluginManagerAware {
             println(result)
         }
         []
+    }
+
+    private String decode(String value) {
+        if (value != null && value != "") {
+            return URLDecoder.decode(value, "UTF-8")
+        }
+        return value
     }
 }
