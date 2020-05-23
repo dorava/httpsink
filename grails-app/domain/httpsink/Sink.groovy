@@ -1,8 +1,6 @@
 package httpsink
 
-import grails.gorm.async.AsyncEntity
-
-class Sink implements AsyncEntity<Sink> {
+class Sink {
     String id
     String service
     String domain

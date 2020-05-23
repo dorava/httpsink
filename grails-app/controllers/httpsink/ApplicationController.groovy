@@ -59,17 +59,21 @@ class ApplicationController implements PluginManagerAware {
 
         def task = task {
             Sink.withNewTransaction {
-                def sink = new Sink()
-                sink.domainId = be ? be["id"] : af["id"]
-                sink.service = db
-                sink.domain = table
-                sink.operation = op
-                sink.timestampms = ts_ms
-                sink.createdon = new Date()
-                sink.before = be
-                sink.after = af
-                sink.changes = dif
-                sink.save(flash: true, failOnError: true)
+                def domainId = be ? be["id"] : af["id"]
+                def sink = Sink.findByServiceAndDomainAndDomainIdAndTimestampms(db, table, domainId, ts_ms)
+                if (!sink) {
+                    sink = new Sink()
+                    sink.domainId = domainId
+                    sink.service = db
+                    sink.domain = table
+                    sink.operation = op
+                    sink.timestampms = ts_ms
+                    sink.createdon = new Date()
+                    sink.before = be
+                    sink.after = af
+                    sink.changes = dif
+                    sink.save(flash: true, failOnError: true)
+                }
                 return sink
             }
         }
